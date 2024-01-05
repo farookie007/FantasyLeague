@@ -8,7 +8,7 @@ class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=100, blank=True, null=False)
     last_name = models.CharField(max_length=100, blank=True, null=False)
 
-    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
+    REQUIRED_FIELDS = ["email", "first_name", "last_name"]
 
     def __str__(self):
         return f"{self.first_name}, {self.last_name}"

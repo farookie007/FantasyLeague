@@ -6,22 +6,21 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm
 
 
-
 def login_view(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request, f'Login successful')
-                return redirect(reverse('dashboard:dashboard'))
-            messages.error(request, 'Invalid matric number or password')
+                messages.success(request, f"Login successful")
+                return redirect(reverse("dashboard:dashboard"))
+            messages.error(request, "Invalid matric number or password")
         else:
-            messages.error(request, 'Invalid form submission')
+            messages.error(request, "Invalid form submission")
         form = LoginForm(request.POST)
     else:
         form = LoginForm()
-    return render(request, 'user_auth/login.html', {'form': form})
+    return render(request, "user_auth/login.html", {"form": form})
