@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     "user_auth.apps.UserAuthConfig",
     "password.apps.PasswordConfig",
     "leagues.apps.LeaguesConfig",
-    "players.apps.PlayersConfig",
     "scores.apps.ScoresConfig",
 ]
 
