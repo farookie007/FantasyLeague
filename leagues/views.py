@@ -1,3 +1,79 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
 
-# Create your views here.
+from .models import League
+
+
+class LeagueCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = League
+    context_object_name = "league"
+    template_name = "leagues/league_create.html"
+    success_url = reverse_lazy("leagues:league_detail")
+    fields = (
+        "name",
+    )
+
+    def form_valid(self, form):
+        form.save(commit=False)
+        form.host = self.request.user
+        messages.success("League created successfully")
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error("Invalid parameters")
+        return super().form_invalid(form)
+
+class LeagueDetailView(DetailView):
+    model = League
+    template_name = "leagues/detail.html"
+    context_object_name = "league"
+
+class LeagueUpdateView(UpdateView):
+    model = League
+    context_object_name = "league"
+    template_name = "leagues/league_update.html"
+    success_url = reverse_lazy("leagues:league_update")
+
+class LeagueDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = League
+    template_name = "leagues/league_delete.html"
+    success_url = reverse_lazy("home")
+
+    def test_func(self) -> bool | None:
+        """Only the host of the league can delete."""
+        return self.request.user == self.host
+
+
+
+class PlayerCreateView(CreateView):
+    ...
+class PlayerDetailView(DetailView):
+    ...
+class PlayerUpdateView(UpdateView):
+    ...
+class PlayerDeleteView(DeleteView):
+    ...
+
+
+
+class TeamCreateView(CreateView):
+    ...
+class TeamUpdateView(UpdateView):
+    ...
+class TeamDetailView(DetailView):
+    ...
+class TeamDeleteView(DeleteView):
+    ...
+
+
+
+class PlayerPointCreateView(CreateView):
+    ...
+class PlayerPointUpdateView(UpdateView):
+    ...
+class PlayerPointDetailView(DetailView):
+    ...
+class PlayerPointDeleteView(DeleteView):
+    ...
