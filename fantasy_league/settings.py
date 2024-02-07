@@ -43,11 +43,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # local Apps
-    "accounts.apps.AccountsConfig",
-    "user_auth.apps.UserAuthConfig",
-    "password.apps.PasswordConfig",
-    "leagues.apps.LeaguesConfig",
-    "scores.apps.ScoresConfig",
+    "accounts.apps.AccountsConfig",  # user registration
+    "user_auth.apps.UserAuthConfig",  # user authentication
+    "password.apps.PasswordConfig",  # password recovery
+    "leagues.apps.LeaguesConfig",  # handling leagues' activities
+    "scores.apps.ScoresConfig",  # handling scoring system
+    "pages.apps.PagesConfig",  # handling pheripheral pages
 ]
 
 MIDDLEWARE = [
@@ -138,4 +139,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Specifying default user model
+
 AUTH_USER_MODEL = "accounts.CustomUser"

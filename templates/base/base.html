@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-nav" class="overlay mobile">
+            <!-- Overlay content -->
+            {% include 'includes/nav_bar.html' %}
+        </div>
+        <header class="flex">
+            <div id="desktop-nav" class="desktop">
+                {% include 'includes/nav_bar.html' %}
+            </div>
+            <a href="#" class="anchor-btn desktop">Join a League</a>
+        </header>
+
+       {% block content %}{% endblock content %}
+
+    </div>
+</body>
+</html>

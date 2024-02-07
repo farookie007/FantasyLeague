@@ -1,5 +1,7 @@
+from collections.abc import Iterable
 import random
 import string
+from typing import Any
 from django.db import models
 from django.conf import settings
 from scores.models import Point
@@ -27,15 +29,43 @@ class League(models.Model):
     host = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="leagues"
     )
+    max_selection_per_club = models.PositiveIntegerField(default=3)
+    teams_budget = models.FloatField()
+    starter_per_team = models.PositiveIntegerField(default=11)
+    benchers_per_team = models.PositiveIntegerField(default=4)
+    # no team should be editable once the league is locked
+    is_locked = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"{self.title} - {self.host}"
+
+    def save(self, *args, **kwargs):
+        """
+        Ensures that the number of benchers per team is not greater than 4.
+        Ensures that the number of starters per team is not greater than 11.
+        These are the regular rules for a standard fantasy match.
+        """
+        if self.starter_per_team > 11:
+            # do not save and raise error
+            pass
+        if self.benchers_per_team > 4:
+            # do not save and raise error
+            pass
+        return super().save(*args, **kwargs)
+
+
+class Club(models.Model):
+    name = models.CharField(max_length=32, blank=False, unique=False)
+    league = models.OneToOneField(
+        League, on_delete=models.CASCADE, related_name="league"
+    )
 
 
 class Player(models.Model):
     name = models.CharField(max_length=25, null=False, blank=True)
     price = models.FloatField(default=0)
     league = models.ForeignKey(League, on_delete=models.CASCADE, related_name="players")
+    club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name="players")
     rating = models.FloatField(default=0)
     position = models.CharField(
         max_length=2,
@@ -47,14 +77,14 @@ class Player(models.Model):
         ),
         default="MF",
     )
-    points_model = models.ManyToManyField(
+    points_made = models.ManyToManyField(
         Point, related_name="players", through="PlayerPoint"
     )
     flagged = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.name}[{self.position}]"
-    
+
     def total_points(self):
         """Return the total points earned by the `Player` as an int.
         Returns: the total points"""
@@ -71,7 +101,7 @@ class PlayerPoint(models.Model):
 
     def __str__(self) -> str:
         return f"{self.point.action} - {self.value}"
-    
+
     @property
     def action(self):
         """Defines the responsible for this point.
@@ -115,12 +145,12 @@ class PlayerPoint(models.Model):
             "OG": -2,
         }
         self.value = value_system.get(self.point.action, 0)
-        super().save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
 
 class Team(models.Model):
     name = models.CharField(max_length=100, default="")
-    money_bank = models.FloatField(default=100)
+    budget = models.FloatField(default=100)
     manager = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="teams"
     )
@@ -134,8 +164,8 @@ class Team(models.Model):
     )
 
     def __str__(self) -> str:
-        return f"{self.manager.username} - ${self.money_bank:.2f}"
-    
+        return f"{self.manager.username} - ${self.budget:.2f}"
+
     @property
     def total_points(self) -> int:
         """The total points that a team has"""
@@ -149,4 +179,15 @@ class Team(models.Model):
             self.captain, self.vice_captain = random.choices(self.players, k=2)
         except:
             pass
-        super().save(*args, **kwargs)
+        return super().save(*args, **kwargs)
+
+
+class Transfer(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="trasfers")
+    player_sold = models.ForeignKey(
+        Player, on_delete=models.DO_NOTHING, related_name="trasfers"
+    )
+    player_bought = models.ForeignKey(
+        Player, on_delete=models.DO_NOTHING, related_name="transfers"
+    )
+    time = models.DateTimeField(auto_now_add=True)
