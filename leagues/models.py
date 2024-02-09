@@ -1,9 +1,9 @@
-from collections.abc import Iterable
 import random
 import string
-from typing import Any
 from django.db import models
+from django.urls import reverse
 from django.conf import settings
+
 from scores.models import Point
 
 
@@ -25,7 +25,9 @@ def generate_code(length: int = 6) -> str:
 
 class League(models.Model):
     title = models.CharField(max_length=50, blank=True, unique=False)
-    code = models.CharField(max_length=10, unique=True, default=generate_code)
+    code = models.CharField(
+        max_length=10, unique=True, db_index=True, default=generate_code
+    )
     host = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="leagues"
     )
@@ -56,9 +58,7 @@ class League(models.Model):
 
 class Club(models.Model):
     name = models.CharField(max_length=32, blank=False, unique=False)
-    league = models.OneToOneField(
-        League, on_delete=models.CASCADE, related_name="league"
-    )
+    league = models.ForeignKey(League, on_delete=models.CASCADE, related_name="clubs")
 
 
 class Player(models.Model):

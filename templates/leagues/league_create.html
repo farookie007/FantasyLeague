@@ -1,0 +1,67 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock styles %}
+
+
+{% block content %}
+
+<main>
+
+    <div id="form-page" class="container">
+
+        {% if league %}
+        <h2 class="txt-center">{{ league.name|title }}</h2>
+        {% else %}
+        <h2 class="txt-center">Create Your Own League</h2>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Title:</label>
+
+                {% render_field form.title name="title" id="title" placeholder="Title of your league" autofocus=True %}
+                {% for error in form.title.errors %}
+                <p class="error-msg">{{ error }}</p>
+                {% endfor %}
+
+            </div>
+            <div class="form-group">
+                <label for="teams_budget">Budget Per Team:</label>
+
+                {% render_field form.teams_budget name="teams_budget" id="teams_budget" %}
+                {% for error in form.teams_budget.errors %}
+                <p class="error-msg">{{ error }}</p>
+                {% endfor %}
+
+            </div>
+            <div class="squeeze">
+                <div class="form-group" title="Number of Players Allowed on the Starting Lineup">
+                    <label for="starter_per_team">Starters Per Team:</label>
+    
+                    {% render_field form.starter_per_team name="starter_per_team" id="starter_per_team" %}
+                    {% for error in form.starter_per_team.errors %}
+                    <p class="error-msg">{{ error }}</p>
+                    {% endfor %}
+    
+                </div>
+                <div class="form-group" title="Number of Players Allowed on the Bench">
+                    <label for="benchers_per_team">Benchers Per Team:</label>
+    
+                    {% render_field form.benchers_per_team name="benchers_per_team" id="benchers_per_team" %}
+                    {% for error in form.benchers_per_team.errors %}
+                    <p class="error-msg">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <input type="submit" value="Create" id="submit-btn" class="btn" >
+        </form>
+    </div>
+</main>
+{% endblock content %}

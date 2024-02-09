@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # 3rd party apps
+    "widget_tweaks",
     # local Apps
     "accounts.apps.AccountsConfig",  # user registration
     "user_auth.apps.UserAuthConfig",  # user authentication

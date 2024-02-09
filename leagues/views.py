@@ -1,32 +1,43 @@
 from django.contrib import messages
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 
 from .models import League, Team, Player, PlayerPoint
 
 
-class LeagueCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class LeagueListView(ListView):
+    model = League
+    context_object_name = "leagues"
+    template_name = "leagues/league_list.html"
+
+
+class LeagueCreateView(LoginRequiredMixin, CreateView):
     model = League
     context_object_name = "league"
     template_name = "leagues/league_create.html"
     success_url = reverse_lazy("leagues:league_detail")
-    fields = ("name",)
+    fields = (
+        "title",
+        "teams_budget",
+        "starter_per_team",
+        "benchers_per_team",
+    )
 
     def form_valid(self, form):
-        form.save(commit=False)
-        form.host = self.request.user
-        messages.success("League created successfully")
-        return super().form_valid(form)
+        league = form.save(commit=False)
+        league.host = self.request.user
+        league.save()
+        messages.success(self.request, "League created successfully")
 
     def form_invalid(self, form):
-        messages.error("Invalid parameters")
+        messages.error(self.request, "Invalid parameters")
         return super().form_invalid(form)
 
 
 class LeagueDetailView(DetailView):
     model = League
-    template_name = "leagues/detail.html"
+    template_name = "leagues/league_detail.html"
     context_object_name = "league"
 
 
@@ -39,7 +50,7 @@ class LeagueUpdateView(UpdateView):
 
 class LeagueDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = League
-    template_name = "leagues/league_delete.html"
+    template_name = "leagues/object_delete.html"
     success_url = reverse_lazy("home")
 
     def test_func(self) -> bool | None:
@@ -51,12 +62,13 @@ class PlayerCreateView(CreateView):
     """View for creating a `Player`"""
 
     model = Player
+    context_object_name = "player"
     template_name = "leagues/player_create.html"
+    success_url = reverse_lazy("leagues:league_detail")
     fields = (
         "name",
-        "price",
         "league",
-        "rating",
+        "club",
         "position",
     )
 
@@ -97,7 +109,7 @@ class PlayerUpdateView(UpdateView):
 
 class PlayerDeleteView(DeleteView):
     model = Player
-    template_name = "leagues/player_delete.html"
+    template_name = "leagues/object_delete.html"
 
 
 class TeamCreateView(CreateView):

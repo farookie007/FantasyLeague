@@ -1,0 +1,146 @@
+/* native tags */
+.input-box,
+textarea,
+input,
+select,
+input[type="radio"],
+#image-label {
+    color: var(--font-color);
+    width: 100%;
+    padding: 10px;
+    margin-top: 3px;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    font-family: var(--monospace);
+    border: 1px solid #ccc;
+    background-color: var(--input-bg);
+    border-radius: 4px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
+    overflow-y: hidden;
+    /* Disable vertical scroll */
+    resize: none;
+}
+input[type="file"] {
+    display: none;
+}
+
+label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--font-color);
+}
+
+.squeeze {
+    display: flex;
+    justify-content: space-between;
+}
+
+.squeeze > div {
+    width: 48%;
+}
+
+select,
+textarea,
+input:focus {
+    outline-color: hsl(20, 96%, 81%);
+}
+
+/* ids */
+#form-page h2 {
+    text-align: center;
+}
+#submit-btn {
+    color: var(--background-color);
+    background-color: var(--font-color);
+    margin-top: 1rem;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+#delete-btn {
+    background-color: rgb(255, 38, 38);
+    transition: background-color 0.3s;
+}
+
+#delete-btn:hover {
+    background-color: rgb(222, 21, 21);
+}
+
+/* classes */
+.txt-center {
+    text-align: center;
+}
+
+.error-msg {
+    color: hsla(0, 94%, 57%, 1);
+    text-align: right;
+    font-size: 1rem;
+    font-weight: 500;
+    font-style: italic;
+    margin-top: -11px;
+}
+
+.btn {
+    font-family: var(--font-fam);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--font-color);
+    background-color: var(--btn-color);
+    border-radius: 4px;
+    height: 2.5rem;
+    line-height: 0;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover,
+.btn:focus {
+    background-color: var(--btn-hover);
+    color: var(--btn-text-hover);
+}
+
+.anchor-btn {
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 500;
+    text-align: center;
+    padding: 1rem;
+    color: var(--background-color);
+    border-radius: 4px;
+    background-color: var(--font-color);
+    transition: background-color 0.3s;
+}
+
+
+.input-box {
+    height: fit-content;
+    color: var(--link-color);
+    cursor: pointer;
+}
+
+.form-group {
+    margin: 5px 0;
+}
+
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 1000px) {
+    #form-page {
+        margin-top: 5rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .container {
+        width: 100%;
+    }
+}
