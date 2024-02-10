@@ -20,7 +20,7 @@ app_name = "leagues"
 
 urlpatterns = [
     # League model"
-    path("", LeagueListView.as_view(), name="league_create"),
+    path("", LeagueListView.as_view(), name="league_list"),
     path("create/", LeagueCreateView.as_view(), name="league_create"),
     path("delete/", LeagueDeleteView.as_view(), name="league_delete"),
     path("update/", LeagueUpdateView.as_view(), name="league_update"),

@@ -17,7 +17,8 @@ class LeagueCreateView(LoginRequiredMixin, CreateView):
     model = League
     context_object_name = "league"
     template_name = "leagues/league_create.html"
-    success_url = reverse_lazy("leagues:league_detail")
+    success_url = reverse_lazy("leagues:league_list")
+    queryset = League.objects.all()
     fields = (
         "title",
         "teams_budget",
@@ -28,9 +29,10 @@ class LeagueCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         league = form.save(commit=False)
         league.host = self.request.user
-        # league.slug = slugify(self.code)
+        league.slug = slugify(league.code)
         league.save()
         messages.success(self.request, "League created successfully")
+        return super().form_valid(form)
 
     def form_invalid(self, form):
         messages.error(self.request, "Invalid parameters")
