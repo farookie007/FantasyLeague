@@ -1,5 +1,11 @@
 from django.contrib import messages
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
+from django.views.generic import (
+    CreateView,
+    DetailView,
+    UpdateView,
+    DeleteView,
+    ListView,
+)
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.utils.text import slugify
@@ -17,7 +23,7 @@ class LeagueCreateView(LoginRequiredMixin, CreateView):
     model = League
     context_object_name = "league"
     template_name = "leagues/league_create.html"
-    success_url = reverse_lazy("leagues:league_list")
+    # success_url = reverse_lazy("leagues:league_list")
     queryset = League.objects.all()
     fields = (
         "title",
@@ -25,6 +31,9 @@ class LeagueCreateView(LoginRequiredMixin, CreateView):
         "starter_per_team",
         "benchers_per_team",
     )
+
+    def get_success_url(self) -> str:
+        return reverse_lazy("leagues:league_detail", kwargs={"slug": self.object.slug})
 
     def form_valid(self, form):
         league = form.save(commit=False)
@@ -50,6 +59,9 @@ class LeagueUpdateView(UpdateView):
     context_object_name = "league"
     template_name = "leagues/league_update.html"
     success_url = reverse_lazy("leagues:league_update")
+
+    def get_success_url(self) -> str:
+        return reverse_lazy("leagues:league_detail", kwargs={"slug": self.object.slug})
 
 
 class LeagueDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

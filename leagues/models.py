@@ -43,7 +43,6 @@ class League(models.Model):
     def __str__(self) -> str:
         return f"{self.title} - {self.host}"
     
-
     def save(self, *args, **kwargs):
         """
         Ensures that the number of benchers per team is not greater than 4.

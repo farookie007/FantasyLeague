@@ -33,5 +33,7 @@ urlpatterns = [
     path("players-point-create/", PlayerPointCreateView.as_view(), name="point_create"),
     path("players-point-delete/", PlayerPointDeleteView.as_view(), name="point_delete"),
     path("players-point-update/", PlayerPointUpdateView.as_view(), name="point_update"),
-    path("players-point/<int:pk>", PlayerPointDetailView.as_view(), name="point_detail"),
+    path(
+        "players-point/<int:pk>", PlayerPointDetailView.as_view(), name="point_detail"
+    ),
 ]
