@@ -20,7 +20,7 @@
             <div id="desktop-nav" class="desktop">
                 {% include 'includes/nav_bar.html' %}
             </div>
-            <a href="#" class="anchor-btn desktop">Join a League</a>
+            <a href="{% url "leagues:league_create" %}" class="anchor-btn desktop">Join a League</a>
         </header>
 
        {% block content %}{% endblock content %}

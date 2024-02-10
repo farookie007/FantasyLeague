@@ -1,8 +1,29 @@
-{% extends "base/base.html" %}
-
+{% extends "base/dashboard_base.html" %}
 {% block content %}
-{% comment %} {% for f in league %}
-<p>{{ f }}</p>
-{% endfor %} {% endcomment %}
-{{ league }}
+<main>
+  <div class="cards">
+    <div class="card txt-center">
+      <div class="title">{{ league.players.count }}</div>
+      <div class="bold">Players</div>
+    </div>
+    <div class="card txt-center">
+      <div class="title">{{ league.clubs.count }}</div>
+      <div class="bold">Clubs</div>
+    </div>
+    <div class="card txt-center">
+      <div class="title">{{ league.teams.count }}</div>
+      <div class="bold">Teams</div>
+    </div>
+    <div class="card txt-center">
+      <div class="title">${{ league.teams_budget }}</div>
+      <div class="bold">per Teams</div>
+    </div>
+    <div class="card txt-center">
+      <div class="title">
+        {{ league.starter_per_team | add:league.benchers_per_team }}
+      </div>
+      <div class="bold">players per Team</div>
+    </div>
+  </div>
+</main>
 {% endblock content %}

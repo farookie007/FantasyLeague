@@ -1,3 +1,4 @@
+from typing import Any
 from django.contrib import messages
 from django.views.generic import (
     CreateView,
@@ -33,7 +34,8 @@ class LeagueCreateView(LoginRequiredMixin, CreateView):
     )
 
     def get_success_url(self) -> str:
-        return reverse_lazy("leagues:league_detail", kwargs={"slug": self.object.slug})
+        obj = self.object
+        return reverse_lazy("leagues:league_detail", kwargs={"title": slugify(obj.title), "slug": obj.slug})
 
     def form_valid(self, form):
         league = form.save(commit=False)
@@ -54,6 +56,7 @@ class LeagueDetailView(DetailView):
     context_object_name = "league"
 
 
+
 class LeagueUpdateView(UpdateView):
     model = League
     context_object_name = "league"
@@ -61,7 +64,8 @@ class LeagueUpdateView(UpdateView):
     success_url = reverse_lazy("leagues:league_update")
 
     def get_success_url(self) -> str:
-        return reverse_lazy("leagues:league_detail", kwargs={"slug": self.object.slug})
+        obj = self.object
+        return reverse_lazy("leagues:league_detail", kwargs={"title": slugify(obj.title), "slug": obj.slug})
 
 
 class LeagueDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -129,7 +133,24 @@ class PlayerDeleteView(DeleteView):
 
 
 class TeamCreateView(CreateView):
-    ...
+    model = Team
+    context_object_name = "team"
+    template_name = "leagues/team_create.html"
+    success_url = reverse_lazy("leagues:team_detail")
+    fields = (
+        "name",
+        "players",
+        "captain",
+        "vice_captain",
+    )
+
+    def form_valid(self, form):
+        messages.success(self.request, "Player registered")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error("Invalid entry. Retry.")
+        return super().form_invalid(form)
 
 
 class TeamUpdateView(UpdateView):

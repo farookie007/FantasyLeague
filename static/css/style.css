@@ -3,8 +3,9 @@
 
 :root {
     --font-color: #000;
+    --font-color-faded: #000c;
     --background-color: #fff;
-    --font-color-faded: #000c
+    --background-color-faded: #fffc;
 }
 
 * {
@@ -100,16 +101,14 @@ ul.nav-links>*:last-child {
 }
 
 /* ids */
-/* id */
-
 #desktop-nav {
     width: fit-content;
-  }
-  
-  #desktop-nav ul {
+}
+
+#desktop-nav ul {
     display: flex;
     justify-content: space-between;
-  }
+}
 
 #landing-page {
     display: flex;
@@ -138,17 +137,50 @@ ul.nav-links>*:last-child {
 /* classes */
 .tablet {
     display: none;
-  }
-  .mobile {
+}
+
+.mobile {
     display: none;
-  }
-  
+}
+
 .flex {
     display: flex;
 }
 
 .txt-center {
     text-align: center;
+}
+
+.font-faded {
+    color: var(--font-color-faded);
+}
+.bold {
+    font-weight: 500;
+}
+
+.obj-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    /* transform: scaleY(0.8) */
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: auto;
+    justify-content: space-evenly;
+}
+
+.card {
+    width: 15rem;
+    height: 10rem;
+    background-color: var(--font-color);
+    color: var(--background-color-faded);
+    /* color: var(--background-color); */
+    border-radius: 18px;
+    padding: 2rem;
+    margin: 3rem;
 }
 
 .anchor-btn {
