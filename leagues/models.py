@@ -42,6 +42,7 @@ class League(models.Model):
 
     def __str__(self) -> str:
         return f"{self.title} - {self.host}"
+    
 
     def save(self, *args, **kwargs):
         """
@@ -50,7 +51,6 @@ class League(models.Model):
         These are the regular rules for a standard fantasy match.
         """
         if not self.slug:
-            print("SELF.SLUG = ", self.slug)
             self.slug = slugify(self.code)
         if self.starter_per_team > 11:
             # do not save and raise error
