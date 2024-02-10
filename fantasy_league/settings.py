@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # 3rd party apps
     "widget_tweaks",
+    "django_extensions",
     # local Apps
     "accounts.apps.AccountsConfig",  # user registration
     "user_auth.apps.UserAuthConfig",  # user authentication
