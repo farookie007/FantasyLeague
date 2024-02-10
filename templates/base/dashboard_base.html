@@ -1,0 +1,30 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block styles %}{% endblock styles %}
+    <title>Document</title>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-nav" class="overlay mobile">
+            <!-- Overlay content -->
+            {% include 'includes/dash_header.html' %}
+        </div>
+        <header class="flex">
+            <div class="desktop font-faded obj-title">{{ object.title }}</div>
+            <div id="desktop-nav" class="desktop">
+                {% include 'includes/dash_header.html' %}
+            </div>
+        </header>
+
+       {% block content %}{% endblock content %}
+
+    </div>
+</body>
+</html>
