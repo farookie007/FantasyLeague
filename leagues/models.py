@@ -3,6 +3,7 @@ import string
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
+from django.utils.text import slugify
 
 from scores.models import Point
 
@@ -37,6 +38,7 @@ class League(models.Model):
     benchers_per_team = models.PositiveIntegerField(default=4)
     # no team should be editable once the league is locked
     is_locked = models.BooleanField(default=False)
+    slug = models.SlugField(max_length=10, unique=True)
 
     def __str__(self) -> str:
         return f"{self.title} - {self.host}"
@@ -47,6 +49,9 @@ class League(models.Model):
         Ensures that the number of starters per team is not greater than 11.
         These are the regular rules for a standard fantasy match.
         """
+        if not self.slug:
+            print("SELF.SLUG = ", self.slug)
+            self.slug = slugify(self.code)
         if self.starter_per_team > 11:
             # do not save and raise error
             pass

@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
+from django.utils.text import slugify
 
 from .models import League, Team, Player, PlayerPoint
 
@@ -27,6 +28,7 @@ class LeagueCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         league = form.save(commit=False)
         league.host = self.request.user
+        # league.slug = slugify(self.code)
         league.save()
         messages.success(self.request, "League created successfully")
 

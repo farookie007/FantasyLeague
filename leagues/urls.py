@@ -24,7 +24,7 @@ urlpatterns = [
     path("create/", LeagueCreateView.as_view(), name="league_create"),
     path("delete/", LeagueDeleteView.as_view(), name="league_delete"),
     path("update/", LeagueUpdateView.as_view(), name="league_update"),
-    path("<int:pk>/", LeagueDetailView.as_view(), name="league_detail"),
+    path("<slug:slug>/", LeagueDetailView.as_view(), name="league_detail"),
     # Player model
     path("players-create/", PlayerCreateView.as_view(), name="player_create"),
     path("players-delete/", PlayerDeleteView.as_view(), name="players_delete"),
