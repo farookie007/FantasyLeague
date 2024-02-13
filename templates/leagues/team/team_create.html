@@ -1,0 +1,70 @@
+{% extends "base/dashboard_base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock styles %}
+
+
+{% block content %}
+
+<main>
+
+    <div id="form-page" class="container">
+
+        {% if league %}
+        <h2 class="txt-center">{{ object.name|title }}</h2>
+        {% else %}
+        <h2 class="txt-center">Create Your Own Team</h2>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Team Name:</label>
+
+                {% render_field form.name id="name" placeholder=user.username autofocus=True %}
+                {% for error in form.name.errors %}
+                <p class="error-msg">{{ error }}</p>
+                {% endfor %}
+
+            </div>
+            <div class="form-group">
+                <label for="players">Choose Players:</label>
+
+                {% render_field form.players id="players" %}
+                {% for error in form.players.errors %}
+                <p class="error-msg">{{ error }}</p>
+                {% endfor %}
+
+            </div>
+            <div class="squeeze">
+                <div class="form-group">
+                    <label for="captain">Captain:</label>
+    
+                    {% render_field form.captain id="captain" %}
+                    {% for error in form.captain.errors %}
+                    <p class="error-msg">{{ error }}</p>
+                    {% endfor %}
+    
+                </div>
+                <div class="form-group" title="Number of Players Allowed on the Bench">
+                    <label for="vice_captain">Vice Captain:</label>
+    
+                    {% render_field form.vice_captain id="vice_captain" %}
+                    {% for error in form.vice_captain.errors %}
+                    <p class="error-msg">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <input type="submit" value="Create" id="submit-btn" class="btn" >
+        </form>
+    </div>
+</main>
+{% endblock content %}
+{% block script %}
+<script src="{% static "js/form.js" %}"></script>
+{% endblock script %}
