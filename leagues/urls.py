@@ -8,6 +8,7 @@ from .views import (
     LeagueDetailView,
     # Team
     TeamCreateView,
+    TeamDetailView,
 )
 
 
@@ -34,5 +35,10 @@ urlpatterns = [
         "<slug:league_slug>/team-create/",
         TeamCreateView.as_view(),
         name="team_create",
+    ),
+    path(
+        "<slug:league_slug>/<slug:slug>/",
+        TeamDetailView.as_view(),
+        name="team_detail",
     ),
 ]
