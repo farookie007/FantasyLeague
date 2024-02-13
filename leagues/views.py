@@ -1,5 +1,7 @@
-from typing import Any
 from django.contrib import messages
+from django.utils.text import slugify
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import (
     CreateView,
     DetailView,
@@ -7,10 +9,8 @@ from django.views.generic import (
     DeleteView,
     ListView,
 )
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.urls import reverse_lazy
-from django.utils.text import slugify
 
+from .forms import TeamCreationForm
 from .models import League, Team, Player, PlayerPoint
 
 
@@ -24,7 +24,6 @@ class LeagueCreateView(LoginRequiredMixin, CreateView):
     model = League
     context_object_name = "league"
     template_name = "leagues/league_create.html"
-    # success_url = reverse_lazy("leagues:league_list")
     queryset = League.objects.all()
     fields = (
         "title",
@@ -35,12 +34,15 @@ class LeagueCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self) -> str:
         obj = self.object
-        return reverse_lazy("leagues:league_detail", kwargs={"title": slugify(obj.title), "slug": obj.slug})
+        return reverse_lazy(
+            "leagues:league_detail",
+            kwargs={"slug": obj.slug},
+        )
 
     def form_valid(self, form):
         league = form.save(commit=False)
         league.host = self.request.user
-        league.slug = slugify(league.code)
+        league.slug = slugify(f"{league.title} {league.code}")
         league.save()
         messages.success(self.request, "League created successfully")
         return super().form_valid(form)
@@ -56,7 +58,6 @@ class LeagueDetailView(DetailView):
     context_object_name = "league"
 
 
-
 class LeagueUpdateView(UpdateView):
     model = League
     context_object_name = "league"
@@ -65,7 +66,10 @@ class LeagueUpdateView(UpdateView):
 
     def get_success_url(self) -> str:
         obj = self.object
-        return reverse_lazy("leagues:league_detail", kwargs={"title": slugify(obj.title), "slug": obj.slug})
+        return reverse_lazy(
+            "leagues:league_detail",
+            kwargs={"slug": obj.slug},
+        )
 
 
 class LeagueDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -137,15 +141,26 @@ class TeamCreateView(CreateView):
     context_object_name = "team"
     template_name = "leagues/team_create.html"
     success_url = reverse_lazy("leagues:team_detail")
-    fields = (
-        "name",
-        "players",
-        "captain",
-        "vice_captain",
-    )
+    form_class = TeamCreationForm
+
+    # def get(self, request, *args, **kwargs):
+    #     self.league = League.objects.filter(slug=self.kwargs['league_slug']).first()
+    #     return super().get(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        league = League.objects.filter(slug=self.kwargs['league_slug']).first()
+        context = {"league": league}
+        return super().get_context_data(**context)
 
     def form_valid(self, form):
-        messages.success(self.request, "Player registered")
+        league = League.objects.filter(slug=self.kwargs['league_slug']).first()
+        team = form.save(commit=False)
+        if not team.name:
+            team.name = self.request.user.username
+        team.manager = self.request.user
+        team.league = league
+        team.budget = league.teams_budget
+        messages.success(self.request, "Your Team has been created")
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -158,7 +173,11 @@ class TeamUpdateView(UpdateView):
 
 
 class TeamDetailView(DetailView):
-    ...
+    """View for displaying a `Team` information"""
+
+    model = Team
+    template_name = "leagues/team_detail.html"
+
 
 
 class TeamDeleteView(DeleteView):

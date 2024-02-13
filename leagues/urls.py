@@ -17,9 +17,22 @@ urlpatterns = [
     # League model"
     path("", LeagueListView.as_view(), name="league_list"),
     path("create/", LeagueCreateView.as_view(), name="league_create"),
-    path("delete/", LeagueDeleteView.as_view(), name="league_delete"),
-    path("<str:title>/<slug:slug>/update/", LeagueUpdateView.as_view(), name="league_update"),
-    path("<str:title>/<slug:slug>/", LeagueDetailView.as_view(), name="league_detail"),
+    path("<slug:slug>/", LeagueDetailView.as_view(), name="league_detail"),
+    path(
+        "<slug:slug>/delete/",
+        LeagueDeleteView.as_view(),
+        name="league_delete",
+    ),
+    path(
+        "<slug:slug>/update/",
+        LeagueUpdateView.as_view(),
+        name="league_update",
+    ),
+
     # Team model
-    path("team-create/", TeamCreateView.as_view(), name="team_create"),
+    path(
+        "<slug:league_slug>/team-create/",
+        TeamCreateView.as_view(),
+        name="team_create",
+    ),
 ]

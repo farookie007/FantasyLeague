@@ -25,7 +25,7 @@
             <div class="form-group">
                 <label for="name">Team Name:</label>
 
-                {% render_field form.name name="name" id="name" placeholder=user.username autofocus=True %}
+                {% render_field form.name id="name" placeholder=user.username autofocus=True %}
                 {% for error in form.name.errors %}
                 <p class="error-msg">{{ error }}</p>
                 {% endfor %}
@@ -34,7 +34,7 @@
             <div class="form-group">
                 <label for="players">Choose Players:</label>
 
-                {% render_field form.players name="players" id="players" %}
+                {% render_field form.players id="players" %}
                 {% for error in form.players.errors %}
                 <p class="error-msg">{{ error }}</p>
                 {% endfor %}
@@ -44,7 +44,7 @@
                 <div class="form-group">
                     <label for="captain">Captain:</label>
     
-                    {% render_field form.captain name="captain" id="captain" %}
+                    {% render_field form.captain id="captain" %}
                     {% for error in form.captain.errors %}
                     <p class="error-msg">{{ error }}</p>
                     {% endfor %}
@@ -53,7 +53,7 @@
                 <div class="form-group" title="Number of Players Allowed on the Bench">
                     <label for="vice_captain">Vice Captain:</label>
     
-                    {% render_field form.vice_captain name="vice_captain" id="vice_captain" %}
+                    {% render_field form.vice_captain id="vice_captain" %}
                     {% for error in form.vice_captain.errors %}
                     <p class="error-msg">{{ error }}</p>
                     {% endfor %}
@@ -65,3 +65,6 @@
     </div>
 </main>
 {% endblock content %}
+{% block script %}
+<script src="{% static "js/form.js" %}"></script>
+{% endblock script %}

@@ -1,9 +1,9 @@
 /* native tags */
-.input-box,
 textarea,
 input,
 select,
 input[type="radio"],
+.input-box,
 #image-label {
     color: var(--font-color);
     width: 100%;
@@ -22,6 +22,7 @@ input[type="radio"],
     /* Disable vertical scroll */
     resize: none;
 }
+
 input[type="file"] {
     display: none;
 }
@@ -30,15 +31,6 @@ label {
     font-size: 1rem;
     font-weight: 500;
     color: var(--font-color);
-}
-
-.squeeze {
-    display: flex;
-    justify-content: space-between;
-}
-
-.squeeze > div {
-    width: 48%;
 }
 
 select,
@@ -51,6 +43,7 @@ input:focus {
 #form-page h2 {
     text-align: center;
 }
+
 #submit-btn {
     color: var(--background-color);
     background-color: var(--font-color);
@@ -58,6 +51,7 @@ input:focus {
     width: 100%;
     margin-bottom: 0.5rem;
 }
+
 #delete-btn {
     background-color: rgb(255, 38, 38);
     transition: background-color 0.3s;
@@ -113,15 +107,21 @@ input:focus {
     transition: background-color 0.3s;
 }
 
+.squeeze {
+    display: flex;
+    justify-content: space-between;
+}
+
+.squeeze>div {
+    width: 48%;
+}
+
+
 
 .input-box {
     height: fit-content;
     color: var(--link-color);
     cursor: pointer;
-}
-
-.form-group {
-    margin: 5px 0;
 }
 
 
@@ -131,6 +131,60 @@ input:focus {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin: 5px 0;
+}
+
+.form-group #players {
+    text-align: left;
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.form-group #players>* {
+    width: 100%;
+    margin: 10px 0;
+    border: 1px solid var(--font-color);
+    box-shadow: 0 0px 2px grey;
+    border-radius: 4px;
+    transition: all 0.3s;
+    background-color: var(--backgrond-color);
+}
+
+.form-group #players>*:hover,
+.form-group #players>*:focus {
+    transform: scaleY(1.2);
+}
+
+.form-group #players input {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    width: fit-content;
+    display: inline-block;
+    display: none;
+}
+
+.form-group #players .selected {
+    background-color: var(--font-color);
+    color: var(--background-color);
+}
+
+.form-group #players label {
+    position: relative;
+    display: inline-block;
+    height: 3rem;
+    line-height: 3rem;
+    width: 100%;
+    border-radius: 4px;
+    text-align: center;
+    transition: all 0.3s;
 }
 
 @media screen and (max-width: 1000px) {

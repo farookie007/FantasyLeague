@@ -51,7 +51,7 @@ class League(models.Model):
         These are the regular rules for a standard fantasy match.
         """
         if not self.slug:
-            self.slug = slugify(self.code)
+            self.slug = slugify(f"{self.title} {self.code}")
         if self.starter_per_team > 11:
             # do not save and raise error
             pass
@@ -90,7 +90,7 @@ class Player(models.Model):
     def __str__(self):
         return f"{self.name}[{self.position}]"
 
-    def total_points(self):
+    def total_points(self) -> int:
         """Return the total points earned by the `Player` as an int.
         Returns: the total points"""
         sum((point.value for point in self.points.all()))
@@ -102,7 +102,7 @@ class PlayerPoint(models.Model):
     status = models.CharField(
         max_length=2, choices=(("A", "Approved"), ("P", "Pending")), default="A"
     )
-    value = models.IntegerField(default=0)
+    value = models.PositiveIntegerField(default=0)
 
     def __str__(self) -> str:
         return f"{self.point.action} - {self.value}"
@@ -154,7 +154,7 @@ class PlayerPoint(models.Model):
 
 
 class Team(models.Model):
-    name = models.CharField(max_length=100, default="")
+    name = models.CharField(max_length=100, default="", blank=True, null=False)
     budget = models.FloatField(default=100)
     manager = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="teams"
@@ -167,6 +167,7 @@ class Team(models.Model):
     vice_captain = models.ForeignKey(
         Player, on_delete=models.DO_NOTHING, related_name="vice_caps", null=True
     )
+    # total_pts = models.PositiveIntegerField(default=0)
 
     def __str__(self) -> str:
         return f"{self.manager.username} - ${self.budget:.2f}"
@@ -174,7 +175,6 @@ class Team(models.Model):
     @property
     def total_points(self) -> int:
         """The total points that a team has"""
-
         return sum((player.total_points for player in self.players.all()))
 
     def save(self, *args, **kwargs):
@@ -188,11 +188,11 @@ class Team(models.Model):
 
 
 class Transfer(models.Model):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="trasfers")
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="transfers")
     player_sold = models.ForeignKey(
-        Player, on_delete=models.DO_NOTHING, related_name="trasfers"
+        Player, on_delete=models.DO_NOTHING, related_name="sold"
     )
     player_bought = models.ForeignKey(
-        Player, on_delete=models.DO_NOTHING, related_name="transfers"
+        Player, on_delete=models.DO_NOTHING, related_name="bought"
     )
     time = models.DateTimeField(auto_now_add=True)
