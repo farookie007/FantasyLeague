@@ -40,9 +40,17 @@ input:focus {
 }
 
 /* ids */
+#no-show,
+.no-show {
+  display: none;
+}
+
 #form-page h2 {
     text-align: center;
 }
+#fgt-password {
+    float: right;
+  }
 
 #submit-btn {
     color: var(--background-color);
@@ -116,7 +124,31 @@ input:focus {
     width: 48%;
 }
 
-
+.pw-inpt {
+    position: relative;
+  }
+  .eye {
+    height: 1.2rem;
+    width: auto;
+    opacity: 0.7;
+    cursor: pointer;
+    position: relative;
+    top: -6px;
+  }
+  .small {
+    font-size: 0.8rem;
+  }
+  
+  .foot {
+    text-align: center;
+  }
+  .hide-pwd {
+    position: absolute;
+    right: 3.5%;
+    top: 60%;
+    transform: translateY(-50%);
+    z-index: 111;
+  }
 
 .input-box {
     height: fit-content;

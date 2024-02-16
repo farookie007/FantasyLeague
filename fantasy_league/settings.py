@@ -142,5 +142,21 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Specifying default user model
-
 AUTH_USER_MODEL = "accounts.CustomUser"
+
+# User Authentication
+LOGIN_URL = "user_auth:login"
+LOGOUT_REDIRECT_URL = 'pages:home'
+
+# Email backend
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'        # development only
+else:
+    # To send the password reset email
+    EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
+    EMAIL_HOST = os.getenv('EMAIL_HOST')
+    EMAIL_PORT = os.getenv('EMAIL_PORT')
+    EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
+    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+

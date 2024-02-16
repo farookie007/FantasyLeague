@@ -13,12 +13,7 @@
 <main>
 
     <div id="form-page" class="container">
-
-        {% if league %}
-        <h2 class="txt-center">{{ object.name|title }}</h2>
-        {% else %}
         <h2 class="txt-center">Create Your Own Team</h2>
-        {% endif %}
 
         <form method="post">
             {% csrf_token %}

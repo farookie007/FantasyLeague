@@ -154,7 +154,7 @@ class PlayerPoint(models.Model):
 
 
 class Team(models.Model):
-    name = models.CharField(max_length=100, default="", blank=True, null=False)
+    name = models.CharField(max_length=100, blank=True, null=False)
     budget = models.FloatField(default=100)
     manager = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="teams"

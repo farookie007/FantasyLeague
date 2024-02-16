@@ -35,7 +35,7 @@ class LeagueCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self) -> str:
         obj = self.object
-        return reverse_lazy("leagues:league_detail", kwargs={"title": slugify(obj.title), "slug": obj.slug})
+        return reverse_lazy("leagues:league_detail", kwargs={"slug": obj.slug})
 
     def form_valid(self, form):
         league = form.save(commit=False)
@@ -65,7 +65,7 @@ class LeagueUpdateView(UpdateView):
 
     def get_success_url(self) -> str:
         obj = self.object
-        return reverse_lazy("leagues:league_detail", kwargs={"title": slugify(obj.title), "slug": obj.slug})
+        return reverse_lazy("leagues:league_detail", kwargs={"slug": obj.slug})
 
 
 class LeagueDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -83,7 +83,7 @@ class PlayerCreateView(CreateView):
 
     model = Player
     context_object_name = "player"
-    template_name = "leagues/player_create.html"
+    template_name = "leagues/player/player_create.html"
     success_url = reverse_lazy("leagues:league_detail")
     fields = (
         "name",
@@ -135,7 +135,7 @@ class PlayerDeleteView(DeleteView):
 class TeamCreateView(CreateView):
     model = Team
     context_object_name = "team"
-    template_name = "leagues/team_create.html"
+    template_name = "leagues/team/team_create.html"
     success_url = reverse_lazy("leagues:team_detail")
     fields = (
         "name",
@@ -145,6 +145,11 @@ class TeamCreateView(CreateView):
     )
 
     def form_valid(self, form):
+        league = League.objects.filter(slug=self.kwargs["league_slug"]).first()
+        team = form.save(commit=False)
+        team.league = league
+        if team.name == "":
+            team.name = self.request.user.username
         messages.success(self.request, "Player registered")
         return super().form_valid(form)
 

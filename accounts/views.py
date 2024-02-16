@@ -6,18 +6,18 @@ from django.views.generic import CreateView
 from .forms import CustomUserCreationForm
 
 
-def register(request):
-    if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(
-                request, "Account created successfully. You'll be redirected to login"
-            )
-            return redirect(reverse("user_auth:login"))
-        messages.warning(request, "Invalid parameters")
-    form = CustomUserCreationForm(request.POST)
-    return render(request, "accounts/register.html", {"form": form})
+# def register(request):
+#     if request.method == "POST":
+#         form = CustomUserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(
+#                 request, "Account created successfully. You'll be redirected to login"
+#             )
+#             return redirect(reverse("user_auth:login"))
+#         messages.warning(request, "Invalid parameters")
+#     form = CustomUserCreationForm(request.POST)
+#     return render(request, "accounts/register.html", {"form": form})
 
 
 class UserCreateView(CreateView):
@@ -33,8 +33,5 @@ class UserCreateView(CreateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.warning(self.request, "Invlalid parameters")
+        messages.error(self.request, "Invlalid parameters")
         return super().form_invalid(form)
-
-
-# text Plus

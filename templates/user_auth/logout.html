@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock styles %}
+
+{% block title %}Logout{% endblock title %}
+
+
+
+{% block content %}
+
+<div class="container">
+    <h2>Logged out successfully</h2>
+    <div class="foot small">
+        <p><a href="{% url 'user_auth:login' %}">Login</a></p>
+    </div>
+</div>
+
+{% endblock content %}

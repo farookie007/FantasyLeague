@@ -17,7 +17,7 @@
             {% include 'includes/dash_header.html' %}
         </div>
         <header class="flex">
-            <div class="desktop font-faded obj-title">{{ object.title }}</div>
+            <div class="desktop font-faded obj-title">{{ object.name }}{{ object.title }}</div>
             <div id="desktop-nav" class="desktop">
                 {% include 'includes/dash_header.html' %}
             </div>
@@ -26,6 +26,7 @@
        {% block content %}{% endblock content %}
 
     </div>
+    <script src="{% static 'js/base.js' %}"></script>
     {% block script %}{% endblock script %}
 </body>
 </html>
